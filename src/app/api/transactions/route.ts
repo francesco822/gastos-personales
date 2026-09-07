@@ -16,7 +16,7 @@
  */
 
 import { db } from "@/lib/db";
-import { transactions } from "@/schema/dbSchema";
+import { attachments, transactions } from "@/schema/dbSchema";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import { expenseCategories, incomeCategories } from "@/lib/categories";
@@ -163,6 +163,7 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
+    await db.delete(attachments).where(eq(attachments.transaction_id, id));
     await db.delete(transactions).where(eq(transactions.id, id));
 
     return NextResponse.json(

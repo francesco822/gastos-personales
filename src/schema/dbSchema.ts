@@ -40,6 +40,16 @@ export const transactions = sqliteTable("transactions", {
   is_consistent_amount: integer("is_consistent_amount", { mode: "boolean" })
     .default(true),
   status: text("status").default("active").notNull(),
+  has_photo: integer("has_photo", { mode: "boolean" }).default(false).notNull(),
+});
+
+// Foto adjunta (comprobante / pantalla de Yape) por movimiento, guardada
+// comprimida en base64. Una por movimiento; se sirve por /api/attachments.
+export const attachments = sqliteTable("attachments", {
+  transaction_id: integer("transaction_id").primaryKey(),
+  mime: text("mime").notNull(),
+  data: text("data").notNull(),
+  created_at: text("created_at").notNull(),
 });
 
 export const achievements = sqliteTable("achievements", {

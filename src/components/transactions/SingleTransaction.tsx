@@ -38,6 +38,7 @@ import { printReceipt } from "@/lib/download";
 import { useBudget } from "@/contexts/BudgetContext";
 import EditTransactionDialog from "./EditTransactionDialog";
 import { AmountMismatchDialog } from "./InconsistencePrompt";
+import PhotoDialog from "./PhotoDialog";
 
 export default function SingleTransaction({
   trx,
@@ -88,6 +89,21 @@ export default function SingleTransaction({
               </span>
               <span className="text-muted-foreground flex items-center gap-2">
                 {formatDate(trx.date)}
+                {trx.has_photo && (
+                  <PhotoDialog
+                    trx={trx}
+                    trigger={
+                      <button
+                        type="button"
+                        aria-label="Ver foto"
+                        className="flex items-center text-blue-500 hover:text-blue-600"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Icon icon="lucide:image" className="h-4 w-4" />
+                      </button>
+                    }
+                  />
+                )}
                 {trx.is_recurring && (
                   <span className="hidden items-center md:flex">
                     <Icon
@@ -159,6 +175,18 @@ export default function SingleTransaction({
               </ContextMenuItem>
             </>
           )}
+          <div className="border my-1 border-accent" />
+          <ContextMenuItem asChild onSelect={(e) => e.preventDefault()}>
+            <PhotoDialog
+              trx={trx}
+              trigger={
+                <div className="flex justify-between w-full cursor-pointer">
+                  {trx.has_photo ? "Ver foto" : "Agregar foto"}
+                  <Icon icon="lucide:camera" className="min-w-5 min-h-5 text-blue-500" />
+                </div>
+              }
+            />
+          </ContextMenuItem>
           <div className="border my-1 border-accent" />
           <ContextMenuItem asChild>
             <div

@@ -52,6 +52,8 @@ import {
 import { fetchExchangeRates } from "../common/Currency";
 import { ScrollArea } from "../ui/scroll-area";
 import { useApp } from "@/contexts/AppContext";
+import PhotoField from "./PhotoField";
+import { compressImage, uploadPhoto } from "@/lib/photo";
 
 export default function NewTransaction() {
   const { currency } = useBudget();
@@ -63,6 +65,19 @@ export default function NewTransaction() {
   );
   const { soundEffects } = useApp();
   const { addTransaction } = useBudget();
+  const [photo, setPhoto] = useState<{ mime: string; data: string; previewUrl: string } | null>(null);
+  const [photoBusy, setPhotoBusy] = useState(false);
+
+  const onPickPhoto = async (file: File) => {
+    setPhotoBusy(true);
+    try {
+      setPhoto(await compressImage(file));
+    } catch (e) {
+      toast.error(`No se pudo leer la foto: ${e}`);
+    } finally {
+      setPhotoBusy(false);
+    }
+  };
 
   useEffect(() => {
     const fetchRates = async () => {
@@ -134,14 +149,21 @@ export default function NewTransaction() {
       const result = await response.json();
 
       if (response.ok) {
+        let saved = result.transaction;
+        if (photo && saved?.id) {
+          const ok = await uploadPhoto(saved.id, photo);
+          if (ok) saved = { ...saved, has_photo: true };
+          else toast.error("El movimiento se guardó, pero la foto no");
+        }
+        setPhoto(null);
         if (mode === "recurring") {
-          addTransaction(result.transaction);
+          addTransaction(saved);
           addTransaction({
-            ...result.transaction,
+            ...saved,
             is_recurring: false,
           });
         } else {
-          addTransaction(result.transaction);
+          addTransaction(saved);
         }
 
         await fetch("/api/cron");
@@ -428,6 +450,12 @@ export default function NewTransaction() {
                       )}
                     />
                   )}
+                  <PhotoField
+                    previewUrl={photo?.previewUrl ?? null}
+                    onPick={onPickPhoto}
+                    onClear={() => setPhoto(null)}
+                    busy={photoBusy}
+                  />
                 </div>
 
                 <HoverEffect className="flex justify-center items-center bg-blue-600 max-h-10 p-0">
