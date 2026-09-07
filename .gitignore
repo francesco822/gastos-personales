@@ -46,4 +46,7 @@ json.sqlite
 # workers
 sw.js
 workbox*.js
-swe*.js
+swe*.jslocal.db
+public/sw.js
+public/workbox-*.js
+public/swe-worker-*.js

@@ -37,24 +37,18 @@ interface PriceDisplayProps {
   className?: string;
 }
 
+// Sin conversion: los montos se guardan y se muestran tal cual en la moneda
+// configurada (NEXT_PUBLIC_CURRENCY). Todas las tasas valen 1.
 export const fetchExchangeRates = async (baseCurrency: string) => {
-  try {
-    const response = await fetch(
-      `https://api.exchangerate-api.com/v4/latest/${baseCurrency}`
-    );
-    const data = await response.json();
-    return data.rates || {};
-  } catch (error) {
-    console.error("Failed to fetch exchange rates:", error);
-    return {};
-  }
+  const budgetCurrency = (process.env.NEXT_PUBLIC_CURRENCY || "USD").toUpperCase();
+  return { USD: 1, [baseCurrency.toUpperCase()]: 1, [budgetCurrency]: 1 };
 };
 
 export const formatCurrency = (amount?: number, currency?: string) => {
   if (amount === undefined || currency === undefined) {
     return "";
   }
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat("es-PE", {
     style: "currency",
     currency: currency,
   }).format(amount);

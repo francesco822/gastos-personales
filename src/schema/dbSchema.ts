@@ -1,42 +1,16 @@
-/*
- *   Copyright (c) 2025 Laith Alkhaddam aka Iconical or Sleepyico.
- *   All rights reserved.
+import { sqliteTable, integer, text, real } from "drizzle-orm/sqlite-core";
 
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
-
- *   http://www.apache.org/licenses/LICENSE-2.0
-
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
- */
-
-import {
-  pgTable,
-  serial,
-  text,
-  timestamp,
-  real,
-  pgEnum,
-  boolean,
-  integer,
-} from "drizzle-orm/pg-core";
-
-export const TypeEnum = pgEnum("TransactionType", ["income", "expense"]);
-
-export const IncomeCategories = pgEnum("IncomeCategories", [
+// Esquema portado de PostgreSQL a SQLite/Turso. Los enums de Postgres pasan a
+// columnas de texto con la lista de valores permitidos.
+export const transactionTypes = ["income", "expense"] as const;
+export const incomeCategoryValues = [
   "Salary",
   "Freelance",
   "Investment",
   "Bonus",
   "Other",
-]);
-
-export const ExpenseCategories = pgEnum("ExpenseCategories", [
+] as const;
+export const expenseCategoryValues = [
   "Food",
   "Rent",
   "Utilities",
@@ -44,37 +18,34 @@ export const ExpenseCategories = pgEnum("ExpenseCategories", [
   "Entertainment",
   "Shopping",
   "Other",
-]);
+] as const;
+export const frequencyValues = ["daily", "weekly", "monthly", "yearly"] as const;
 
-export const FrequencyEnum = pgEnum("Frequency", [
-  "daily",
-  "weekly",
-  "monthly",
-  "yearly",
-]);
-
-export const transactions = pgTable("transactions", {
-  id: serial("id").primaryKey(),
-  type: TypeEnum("type"),
+export const transactions = sqliteTable("transactions", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  type: text("type", { enum: transactionTypes }),
   amount: real("amount").notNull(),
   original_amount: real("original_amount"),
   original_currency: text("original_currency"),
   description: text("description"),
-  date: timestamp("date", { mode: "string" }).notNull(),
+  date: text("date").notNull(),
   category: text("category"),
-  is_actual: boolean("is_actual").default(true).notNull(),
+  is_actual: integer("is_actual", { mode: "boolean" }).default(true).notNull(),
 
   recurring_parent_id: integer("recurring_parent_id"),
-  is_recurring: boolean("is_recurring").default(false).notNull(),
-  frequency: FrequencyEnum("frequency"),
-  is_consistent_amount: boolean("is_consistent_amount").default(true),
+  is_recurring: integer("is_recurring", { mode: "boolean" })
+    .default(false)
+    .notNull(),
+  frequency: text("frequency", { enum: frequencyValues }),
+  is_consistent_amount: integer("is_consistent_amount", { mode: "boolean" })
+    .default(true),
   status: text("status").default("active").notNull(),
 });
 
-export const achievements = pgTable("achievements", {
+export const achievements = sqliteTable("achievements", {
   id: text("id").primaryKey(),
   title: text("title").notNull(),
   description: text("description").notNull(),
-  unlocked: boolean("unlocked").default(false).notNull(),
-  unlocked_at: timestamp("unlocked_at", { mode: "string" }),
+  unlocked: integer("unlocked", { mode: "boolean" }).default(false).notNull(),
+  unlocked_at: text("unlocked_at"),
 });
