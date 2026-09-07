@@ -45,7 +45,8 @@ import {
 
 export default function EditTransactionDialog({
   trx,
-}: Readonly<{ trx: selectTransactionType }>) {
+  trigger,
+}: Readonly<{ trx: selectTransactionType; trigger?: React.ReactNode }>) {
   const { updateTransaction } = useBudget();
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState(trx.amount);
@@ -91,6 +92,7 @@ export default function EditTransactionDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild onClick={() => setOpen(true)}>
+        {trigger ?? (
         <div className="text-white transition-colors flex items-center justify-between gap-1 cursor-pointer rounded-sm py-1 px-2 group hover:bg-accent text-sm">
           <span>Editar movimiento</span>
           <Icon
@@ -102,6 +104,7 @@ export default function EditTransactionDialog({
             }}
           />
         </div>
+        )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

@@ -1,83 +1,86 @@
-/*
- *   Copyright (c) 2025 Laith Alkhaddam aka Iconical or Sleepyico.
- *   All rights reserved.
-
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
-
- *   http://www.apache.org/licenses/LICENSE-2.0
-
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
- */
+"use client";
 
 import { useBudget } from "@/contexts/BudgetContext";
 import { Icon } from "@iconify/react";
 import React from "react";
-import SortButton from "./SortButton";
+import { cn } from "@/lib/utils";
 
+const ORDENES: { key: "date" | "amount" | "recurring"; label: string }[] = [
+  { key: "date", label: "Fecha" },
+  { key: "amount", label: "Monto" },
+  { key: "recurring", label: "Recurrentes" },
+];
+
+// Filtro por tipo y orden con texto, sin iconos crípticos.
 export default function SortButtons() {
-  const { sortTransactions, sortKey, sortOrder, toggleSortOrder } = useBudget();
+  const {
+    sortTransactions,
+    sortKey,
+    sortOrder,
+    toggleSortOrder,
+    transactionTypeFilter,
+    filterByType,
+  } = useBudget();
+
+  const pill = "rounded-md px-3 py-1.5 text-xs font-semibold transition";
 
   return (
-    <div className="flex gap-2 bg-secondary rounded-lg items-center justify-between py-1 px-3 mb-2 group transition-all ease-linear duration-500">
-      <span className="flex gap-1 items-center">
-        <Icon
-          onClick={() => toggleSortOrder()}
-          icon="mdi:filter"
-          width={20}
-          className="transition-all"
-        />
-        :
-      </span>
-
-      <div className="flex gap-2">
-        <SortButton
-          sId="id"
-          sortKey={sortKey}
-          icon="mdi:recent"
-          onClick={() => sortTransactions("id")}
-          popTitle="Ordenar por más recientes"
-        />
-        <SortButton
-          sId="amount"
-          sortKey={sortKey}
-          icon="mdi:cash-multiple"
-          onClick={() => sortTransactions("amount")}
-          popTitle="Ordenar por monto"
-        />
-        <SortButton
-          sId="date"
-          sortKey={sortKey}
-          icon="line-md:calendar"
-          onClick={() => sortTransactions("date")}
-          popTitle="Ordenar por fecha"
-        />
-        <SortButton
-          sId="recurring"
-          sortKey={sortKey}
-          icon="fluent:calendar-arrow-repeat-all-16-filled"
-          onClick={() => sortTransactions("recurring")}
-          popTitle="Ver movimientos recurrentes"
-        />
+    <div className="flex flex-col gap-2 mb-2">
+      <div className="grid grid-cols-3 gap-1 rounded-md bg-secondary p-1">
+        {(
+          [
+            ["all", "Todos"],
+            ["expense", "Gastos"],
+            ["income", "Ingresos"],
+          ] as const
+        ).map(([v, label]) => (
+          <button
+            key={v}
+            type="button"
+            onClick={() => filterByType(v)}
+            className={cn(
+              pill,
+              transactionTypeFilter === v
+                ? v === "expense"
+                  ? "bg-red-500 text-white"
+                  : v === "income"
+                  ? "bg-green-500 text-white"
+                  : "bg-blue-500 text-white"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            {label}
+          </button>
+        ))}
       </div>
-
-      <SortButton
-        icon={
-          sortOrder === "asc"
-            ? "tabler:sort-ascending"
-            : "tabler:sort-descending"
-        }
-        className="text-green-500 transition-all"
-        onClick={() => toggleSortOrder()}
-        popTitle={
-          sortOrder === "asc" ? "Orden ascendente" : "Orden descendente"
-        }
-      />
+      <div className="flex items-center gap-1 text-xs text-muted-foreground">
+        <span className="mr-1">Ordenar por</span>
+        {ORDENES.map((o) => (
+          <button
+            key={o.key}
+            type="button"
+            onClick={() => sortTransactions(o.key)}
+            className={cn(
+              pill,
+              "py-1",
+              sortKey === o.key || (o.key === "date" && sortKey === "id")
+                ? "bg-accent text-foreground"
+                : "hover:text-foreground"
+            )}
+          >
+            {o.label}
+          </button>
+        ))}
+        <button
+          type="button"
+          onClick={() => toggleSortOrder()}
+          className={cn(pill, "ml-auto flex items-center gap-1 py-1 hover:text-foreground")}
+          aria-label={sortOrder === "asc" ? "Orden ascendente" : "Orden descendente"}
+        >
+          <Icon icon={sortOrder === "asc" ? "lucide:arrow-up-narrow-wide" : "lucide:arrow-down-wide-narrow"} className="h-4 w-4" />
+          {sortOrder === "asc" ? "Antiguos primero" : "Recientes primero"}
+        </button>
+      </div>
     </div>
   );
 }

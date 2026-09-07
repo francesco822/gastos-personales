@@ -29,6 +29,7 @@ import { Settings } from "@/components/common/Settings";
 import PageLayout from "@/components/helpers/PageLayout";
 import { Achievements } from "@/components/common/Achievements";
 import { AppProvider } from "@/contexts/AppContext";
+import BottomNav from "@/components/common/BottomNav";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -74,7 +75,7 @@ export default function RootLayout({
           <PasscodeWrapper>
             <AppProvider>
               <BudgetProvider>
-                <main className="p-0 md:p-6">
+                <main className="p-0 pb-20 md:p-6 md:pb-24">
                   <PageLayout>
                     <Logo />
                     <Settings />
@@ -83,6 +84,7 @@ export default function RootLayout({
                     {children}
                   </PageLayout>
                 </main>
+                <BottomNav />
                 <GoToTop />
                 <Toaster />
               </BudgetProvider>

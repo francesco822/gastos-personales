@@ -36,7 +36,8 @@ import { useApp } from "@/contexts/AppContext";
 
 export default function DeleteTransactionDialog({
   trx,
-}: Readonly<{ trx: selectTransactionType }>) {
+  trigger,
+}: Readonly<{ trx: selectTransactionType; trigger?: React.ReactNode }>) {
   const { removeTransaction } = useBudget();
   const [confirmOpen, setConfirmOpen] = useState(false);
   const { soundEffects } = useApp();
@@ -70,6 +71,7 @@ export default function DeleteTransactionDialog({
   return (
     <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
       <AlertDialogTrigger asChild>
+        {trigger ?? (
         <div className="text-white transition-colors flex items-center justify-between gap-4 cursor-pointer rounded-sm py-1 px-2 group hover:bg-accent text-sm">
           <span>Eliminar movimiento</span>
           <Icon
@@ -78,6 +80,7 @@ export default function DeleteTransactionDialog({
             className="text-red-500"
           />
         </div>
+        )}
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

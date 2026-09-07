@@ -114,10 +114,9 @@ export default function NewTransaction() {
     if (isSubmitting) return;
     setIsSubmitting(true);
 
+    // Se guarda la hora local tal cual (sin desfase de zona horaria); el resto
+    // de la app la lee con new Date(texto) como hora local.
     const localDate = new Date(data.date);
-    const utcDate = new Date(
-      localDate.getTime() - localDate.getTimezoneOffset() * 60000
-    );
 
     const correctCurrency =
       currency.length !== 3 ? "USD" : currency.toUpperCase();
@@ -129,7 +128,7 @@ export default function NewTransaction() {
     const formData = {
       ...data,
       amount: amountInUSD,
-      date: utcDate.toISOString(),
+      date: format(localDate, "yyyy-MM-dd'T'HH:mm:ss"),
       ...(amountAddedAs !== undefined && { amount_added_as: amountAddedAs }),
       ...(currency !== "USD" && {
         original_amount: data.amount,

@@ -29,6 +29,7 @@ import { selectTransactionType } from "@/schema/transactionForm";
 import { useBudget } from "@/contexts/BudgetContext";
 import SortButtons from "../sorting/SortButtons";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function TransactionsList() {
   const { filteredTransactions, currency } = useBudget();
@@ -63,16 +64,26 @@ export default function TransactionsList() {
             return <SingleTransaction key={trx.id} trx={trx} />;
           })
         ) : (
-          <span className="text-center py-12">No hay movimientos en este periodo</span>
+          <div className="flex flex-col items-center gap-3 py-10 text-center">
+            <Icon icon="lucide:inbox" className="h-8 w-8 text-muted-foreground" />
+            <span className="text-muted-foreground">No hay movimientos en este periodo</span>
+            <Link
+              href="/"
+              className="rounded-md bg-blue-500 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-600"
+            >
+              Registrar un movimiento
+            </Link>
+          </div>
         )}
       </div>
-      <div className="border-t-2 mt-4" />
-      <div className="mt-4 flex flex-col md:flex-row justify-between items-center gap-2">
+      <div className="border-t mt-4 border-border" />
+      <p className="mt-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Exportar</p>
+      <div className="mt-2 flex flex-row justify-between items-center gap-2">
         <div
-          className="flex w-full gap-2 items-center justify-center cursor-pointer bg-accent hover:bg-blue-500 transition-colors duration-300 p-2 rounded-md"
+          className="flex w-full gap-2 items-center justify-center cursor-pointer bg-secondary hover:bg-accent transition-colors duration-300 p-2 rounded-md text-sm"
           onClick={() => printTransactions(filteredTransactions, currency)}
         >
-          Imprimir PDF
+          PDF
           <Icon
             icon="ix:pdf-document-filled"
             width={23}
@@ -80,17 +91,17 @@ export default function TransactionsList() {
           />
         </div>
         <div
-          className="flex w-full gap-2 items-center justify-center cursor-pointer bg-accent hover:bg-blue-500 transition-colors duration-300 p-2 rounded-md"
+          className="flex w-full gap-2 items-center justify-center cursor-pointer bg-secondary hover:bg-accent transition-colors duration-300 p-2 rounded-md text-sm"
           onClick={() => exportTransactions(filteredTransactions)}
         >
-          Exportar CSV
+          CSV
           <Icon icon="ix:simulation-table" width={20} aria-valuetext="Exportar" />
         </div>
         <div
-          className="flex w-full gap-2 items-center justify-center cursor-pointer bg-accent hover:bg-blue-500 transition-colors duration-300 p-2 rounded-md"
+          className="flex w-full gap-2 items-center justify-center cursor-pointer bg-secondary hover:bg-accent transition-colors duration-300 p-2 rounded-md text-sm"
           onClick={() => downloadJSON(filteredTransactions, currency)}
         >
-          Exportar JSON
+          JSON
           <Icon
             icon="ix:json-document-filled"
             width={23}

@@ -49,7 +49,7 @@ export default function GoToTop() {
   }, [isUpActive, position, isClient]);
 
   return (
-    <div className="right-6 bottom-3 z-50 fixed items-center md:space-x-2 flex flex-col md:flex-row gap-2 md:gap-0">
+    <div className="right-4 bottom-20 z-50 fixed items-center md:space-x-2 flex flex-col md:flex-row gap-2 md:gap-0">
       {isDownActive && (
         <HoverEffect
           onClick={goToBottom}
