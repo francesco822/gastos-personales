@@ -32,6 +32,8 @@ export const expenseCategories = [
   "Transporte",
   "Entretenimiento",
   "Compras",
+  "Amada",
+  "Familia",
   "Otro",
 ];
 

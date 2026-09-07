@@ -17,6 +17,8 @@ export const expenseCategoryValues = [
   "Transporte",
   "Entretenimiento",
   "Compras",
+  "Amada",
+  "Familia",
   "Otro",
 ] as const;
 export const frequencyValues = ["daily", "weekly", "monthly", "yearly"] as const;

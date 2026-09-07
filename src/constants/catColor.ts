@@ -23,6 +23,8 @@ export const categoryColors = [
   { category: "Transporte", color: "#e24444" },
   { category: "Entretenimiento", color: "#e24444" },
   { category: "Compras", color: "#e24444" },
+  { category: "Amada", color: "#e24444" },
+  { category: "Familia", color: "#e24444" },
   { category: "Otro", color: "#e24444" },
 
   // Ingresos

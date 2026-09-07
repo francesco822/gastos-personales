@@ -18,6 +18,8 @@ export const ICONOS_CATEGORIA: Record<string, string> = {
   Transporte: "lucide:car",
   Entretenimiento: "lucide:clapperboard",
   Compras: "lucide:shopping-bag",
+  Amada: "lucide:heart",
+  Familia: "lucide:users",
   Sueldo: "lucide:briefcase",
   Freelance: "lucide:laptop",
   Inversión: "lucide:trending-up",
