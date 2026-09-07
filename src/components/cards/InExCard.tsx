@@ -22,7 +22,7 @@ import { cn } from "@/lib/utils";
 import { Icon } from "@iconify/react";
 
 interface InExCardProps {
-  title: "Expenses" | "Income";
+  title: "Gastos" | "Ingresos";
   amount: number;
   onClick?: () => void;
   className?: string;
@@ -46,7 +46,7 @@ export default function InExCard({
     <HoverEffect
       className={cn("p-2", className)}
       bgColor={
-        title === "Expenses"
+        title === "Gastos"
           ? "linear-gradient(135deg, #8b1c1c, #e24444, #d34f1b)"
           : "linear-gradient(135deg, #166d3b, #1ba94c, #6dd400)"
       }
@@ -54,7 +54,7 @@ export default function InExCard({
       <div
         className={cn(
           "flex flex-col items-center justify-center font-semibold text-foreground border-l-8 rounded-l-md",
-          title === "Expenses" ? "border-[#e24444]" : "border-[#166d3b]"
+          title === "Gastos" ? "border-[#e24444]" : "border-[#166d3b]"
         )}
       >
         <h2 className="flex gap-1 items-center">

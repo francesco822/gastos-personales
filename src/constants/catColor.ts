@@ -16,18 +16,18 @@
  */
 
 export const categoryColors = [
-  // Expenses
-  { category: "Food", color: "#e24444" },
-  { category: "Rent", color: "#e24444" },
-  { category: "Utilities", color: "#e24444" },
-  { category: "Transport", color: "#e24444" },
-  { category: "Entertainment", color: "#e24444" },
-  { category: "Shopping", color: "#e24444" },
-  { category: "Other", color: "#e24444" },
+  // Gastos
+  { category: "Comida", color: "#e24444" },
+  { category: "Alquiler", color: "#e24444" },
+  { category: "Servicios", color: "#e24444" },
+  { category: "Transporte", color: "#e24444" },
+  { category: "Entretenimiento", color: "#e24444" },
+  { category: "Compras", color: "#e24444" },
+  { category: "Otro", color: "#e24444" },
 
-  // Income
-  { category: "Salary", color: "#2DAC64" },
+  // Ingresos
+  { category: "Sueldo", color: "#2DAC64" },
   { category: "Freelance", color: "#2DAC64" },
-  { category: "Investment", color: "#2DAC64" },
-  { category: "Bonus", color: "#2DAC64" },
+  { category: "Inversión", color: "#2DAC64" },
+  { category: "Bono", color: "#2DAC64" },
 ];

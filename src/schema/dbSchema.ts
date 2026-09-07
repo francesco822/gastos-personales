@@ -4,20 +4,20 @@ import { sqliteTable, integer, text, real } from "drizzle-orm/sqlite-core";
 // columnas de texto con la lista de valores permitidos.
 export const transactionTypes = ["income", "expense"] as const;
 export const incomeCategoryValues = [
-  "Salary",
+  "Sueldo",
   "Freelance",
-  "Investment",
-  "Bonus",
-  "Other",
+  "Inversión",
+  "Bono",
+  "Otro",
 ] as const;
 export const expenseCategoryValues = [
-  "Food",
-  "Rent",
-  "Utilities",
-  "Transport",
-  "Entertainment",
-  "Shopping",
-  "Other",
+  "Comida",
+  "Alquiler",
+  "Servicios",
+  "Transporte",
+  "Entretenimiento",
+  "Compras",
+  "Otro",
 ] as const;
 export const frequencyValues = ["daily", "weekly", "monthly", "yearly"] as const;
 

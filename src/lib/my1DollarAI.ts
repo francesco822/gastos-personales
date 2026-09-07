@@ -22,12 +22,12 @@ import { format } from "date-fns";
 const currencyCode = process.env.NEXT_PUBLIC_CURRENCY || "USD";
 
 export const getSpendingInsights = (transactions: selectTransactionType[]) => {
-  if (!transactions.length) return "No transactions recorded yet.";
+  if (!transactions.length) return "Todavía no hay movimientos registrados.";
 
   const categories = transactions.reduce<Record<string, number>>((acc, trx) => {
     if (trx.type === "expense") {
-      acc[trx.category ?? "None"] =
-        (acc[trx.category ?? "None"] || 0) + trx.amount;
+      acc[trx.category ?? "Sin categoría"] =
+        (acc[trx.category ?? "Sin categoría"] || 0) + trx.amount;
     }
     return acc;
   }, {});
@@ -37,22 +37,21 @@ export const getSpendingInsights = (transactions: selectTransactionType[]) => {
   );
   const topCategory = sortedCategories.length
     ? sortedCategories[0]
-    : ["None", 0];
+    : ["Sin categoría", 0];
   const totalSpent = sortedCategories.reduce(
     (sum, [, value]) => sum + value,
     0
   );
 
-  return `Your highest spending category this month is ${
+  return `Este mes tu categoría con más gasto es ${
     topCategory[0]
-  } with ${formatCurrency(
+  }, con ${formatCurrency(
     Number(Number(topCategory[1]).toFixed(2)),
     currencyCode
-  )} spent. 
-  You spent a total of ${formatCurrency(
+  )}. En total gastaste ${formatCurrency(
     Number(totalSpent.toFixed(2)),
     currencyCode
-  )} this month.`;
+  )} este mes.`;
 };
 
 export const predictNextMonthSpending = (
@@ -75,7 +74,7 @@ export const predictNextMonthSpending = (
     : 0;
   const projected = avgSpending * 1.05;
 
-  return `Based on recent trends, your predicted spending for next month is ${formatCurrency(
+  return `Según tu tendencia reciente, el próximo mes gastarías ${formatCurrency(
     Number(projected.toFixed(2)),
     currencyCode
   )}.`;
@@ -98,5 +97,5 @@ export const getNoSpendStreak = (transactions: selectTransactionType[]) => {
     prevDate = trxDate;
   }
 
-  return `🔥 You have a ${streak}-day no-spend streak!`;
+  return `🔥 Llevas ${streak} ${streak === 1 ? "día" : "días"} sin gastar`;
 };

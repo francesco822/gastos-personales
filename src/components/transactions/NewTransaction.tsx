@@ -44,7 +44,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { expenseCategories, incomeCategories } from "@/lib/categories";
+import {
+  categoryLabel,
+  expenseCategories,
+  incomeCategories,
+} from "@/lib/categories";
 import { fetchExchangeRates } from "../common/Currency";
 import { ScrollArea } from "../ui/scroll-area";
 import { useApp } from "@/contexts/AppContext";
@@ -144,8 +148,8 @@ export default function NewTransaction() {
 
         toast.success(
           formData.type === "income"
-            ? "Income added successfully! 💰"
-            : "Expense recorded! 💸"
+            ? "Ingreso registrado 💰"
+            : "Gasto registrado 💸"
         );
         const audio = new Audio(
           formData.type === "income"
@@ -171,7 +175,7 @@ export default function NewTransaction() {
         });
       }
     } catch (err) {
-      toast.error(`Something went wrong: ${err}`);
+      toast.error(`Algo salió mal: ${err}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -182,15 +186,15 @@ export default function NewTransaction() {
       <DrawerTrigger asChild>
         <HoverEffect className="max-w-56 max-h-10 flex items-center justify-center gap-2 bg-blue-500/50">
           <Icon icon="line-md:text-box-multiple-twotone-to-text-box-twotone-transition" />
-          <span className="text-black dark:text-white">New Transaction</span>
+          <span className="text-black dark:text-white">Nuevo movimiento</span>
         </HoverEffect>
       </DrawerTrigger>
       <DrawerContent
-        aria-describedby="Adding a new transaction menu"
+        aria-describedby="Formulario de nuevo movimiento"
         className="max-h-svh"
       >
         <ScrollArea className="overflow-auto p-4 scroll-smooth scroll-p-2 no-scrollbar">
-          <DrawerTitle className="hidden">Add a new transaction</DrawerTitle>
+          <DrawerTitle className="hidden">Agregar un movimiento</DrawerTitle>
           <div className="h-full flex flex-col gap-4 justify-center items-center">
             <Form {...unifiedForm}>
               <form
@@ -209,7 +213,7 @@ export default function NewTransaction() {
                         }`}
                         onClick={() => handleToggleType("income")}
                       >
-                        Income
+                        Ingreso
                       </button>
                       <button
                         type="button"
@@ -218,7 +222,7 @@ export default function NewTransaction() {
                         }`}
                         onClick={() => handleToggleType("expense")}
                       >
-                        Expense
+                        Gasto
                       </button>
                       <Input
                         {...unifiedForm.register("type")}
@@ -237,7 +241,7 @@ export default function NewTransaction() {
                     }`}
                     onClick={() => handleModeChange("normal")}
                   >
-                    One-Time
+                    Único
                   </button>
                   <button
                     type="button"
@@ -246,7 +250,7 @@ export default function NewTransaction() {
                     }`}
                     onClick={() => handleModeChange("recurring")}
                   >
-                    Recurring
+                    Recurrente
                   </button>
                 </div>
 
@@ -256,24 +260,24 @@ export default function NewTransaction() {
                     name="category"
                     render={({ field }) => (
                       <FormItem className="flex justify-between">
-                        <FormLabel>Category</FormLabel>
+                        <FormLabel>Categoría</FormLabel>
                         <Select
                           value={field.value ?? "None"}
                           onValueChange={field.onChange}
                         >
                           <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder={field.value ?? "None"} />
+                            <SelectValue placeholder={categoryLabel(field.value)} />
                           </SelectTrigger>
                           <SelectContent
                             className="max-w-60 md:max-w-sm"
-                            aria-describedby="Select a category"
+                            aria-describedby="Elige una categoría"
                           >
                             {(type === "income"
                               ? incomeCategories
                               : expenseCategories
                             ).map((cat, idx) => (
                               <SelectItem key={`${cat}-${idx}`} value={cat}>
-                                {cat}
+                                {categoryLabel(cat)}
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -287,7 +291,7 @@ export default function NewTransaction() {
                     name="amount"
                     render={({ field }) => (
                       <FormItem className="flex justify-between">
-                        <FormLabel>Amount</FormLabel>
+                        <FormLabel>Monto</FormLabel>
                         <Input
                           type="number"
                           className="max-w-60 md:max-w-sm text-right"
@@ -307,7 +311,7 @@ export default function NewTransaction() {
                     name="description"
                     render={() => (
                       <FormItem className="flex justify-between">
-                        <FormLabel>Description</FormLabel>
+                        <FormLabel>Descripción</FormLabel>
                         <Textarea
                           {...unifiedForm.register("description")}
                           className="max-w-60 md:max-w-sm"
@@ -322,7 +326,7 @@ export default function NewTransaction() {
                     render={({ field }) => (
                       <FormItem className="flex justify-between">
                         <FormLabel>
-                          {mode === "recurring" ? "Start Date" : "Date"}
+                          {mode === "recurring" ? "Fecha de inicio" : "Fecha"}
                         </FormLabel>
                         <input
                           {...field}
@@ -360,7 +364,7 @@ export default function NewTransaction() {
                       name="frequency"
                       render={({ field }) => (
                         <FormItem className="flex justify-between">
-                          <FormLabel>Frequency</FormLabel>
+                          <FormLabel>Frecuencia</FormLabel>
                           <Select
                             value={field.value ?? "monthly"}
                             onValueChange={field.onChange}
@@ -371,10 +375,10 @@ export default function NewTransaction() {
                               />
                             </SelectTrigger>
                             <SelectContent className="border p-2 rounded-md text-base w-full max-w-56 md:max-w-sm">
-                              <SelectItem value="daily">Daily</SelectItem>
-                              <SelectItem value="weekly">Weekly</SelectItem>
-                              <SelectItem value="monthly">Monthly</SelectItem>
-                              <SelectItem value="yearly">Yearly</SelectItem>
+                              <SelectItem value="daily">Diario</SelectItem>
+                              <SelectItem value="weekly">Semanal</SelectItem>
+                              <SelectItem value="monthly">Mensual</SelectItem>
+                              <SelectItem value="yearly">Anual</SelectItem>
                             </SelectContent>
                           </Select>
                         </FormItem>
@@ -392,7 +396,7 @@ export default function NewTransaction() {
                             htmlFor="is_consistent_amount"
                             className="m-0"
                           >
-                            Consistent Amount
+                            Monto fijo
                           </FormLabel>
                           <Input
                             type="checkbox"
@@ -411,7 +415,7 @@ export default function NewTransaction() {
                       render={({ field }) => (
                         <FormItem className="flex justify-between items-center gap-2">
                           <FormLabel htmlFor="is_actual" className="m-0">
-                            Actual Amount
+                            Monto confirmado
                           </FormLabel>
                           <Input
                             type="checkbox"
@@ -433,10 +437,10 @@ export default function NewTransaction() {
                     type="submit"
                   >
                     {isSubmitting
-                      ? "Adding..."
+                      ? "Guardando..."
                       : mode === "recurring"
-                      ? "Add Recurring Transaction"
-                      : "Add Transaction"}
+                      ? "Agregar movimiento recurrente"
+                      : "Agregar movimiento"}
                   </button>
                 </HoverEffect>
 

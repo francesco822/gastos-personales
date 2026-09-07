@@ -17,6 +17,7 @@
 
 import { selectTransactionType } from "@/schema/transactionForm";
 import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
 type MonthlyTrend = {
   name: string;
@@ -31,7 +32,7 @@ export const getMonthlyTrends = (
     (acc, trx) => {
       if (!trx.date) return acc;
 
-      const month: string = format(new Date(trx.date), "MMM yyyy");
+      const month: string = format(new Date(trx.date), "MMM yyyy", { locale: es });
 
       if (!acc[month]) {
         acc[month] = { name: month, income: 0, expenses: 0 };

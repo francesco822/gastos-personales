@@ -15,7 +15,7 @@
  *   limitations under the License.
  */
 import type { Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import PasscodeWrapper from "@/components/security/PasscodeWrapper";
@@ -30,14 +30,10 @@ import PageLayout from "@/components/helpers/PageLayout";
 import { Achievements } from "@/components/common/Achievements";
 import { AppProvider } from "@/contexts/AppContext";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata = generateMetadata;
@@ -47,7 +43,7 @@ export const viewport: Viewport = {
   maximumScale: 1,
   width: "device-width",
   userScalable: false,
-  themeColor: "#166d3b",
+  themeColor: "#17202B",
 };
 
 export default function RootLayout({
@@ -61,17 +57,17 @@ export default function RootLayout({
 
   return (
     <html
-      lang="en"
+      lang="es"
       suppressHydrationWarning={true}
       className="scroll-smooth scroll-p-4 overflow-hidden overflow-y-scroll"
     >
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-w-full flex justify-center items-center`}
+        className={`${inter.variable} antialiased min-w-full flex justify-center items-center`}
         suppressHydrationWarning={true}
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >

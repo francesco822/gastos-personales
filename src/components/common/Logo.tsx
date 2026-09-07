@@ -1,43 +1,42 @@
-/*
- *   Copyright (c) 2025 Laith Alkhaddam aka Iconical or Sleepyico.
- *   All rights reserved.
-
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
-
- *   http://www.apache.org/licenses/LICENSE-2.0
-
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
- */
 "use client";
 
 import React from "react";
-import { useTheme } from "next-themes";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+
+// Cabecera con la marca MyWorkIn: wordmark blanco en oscuro, navy en claro.
 export default function Logo() {
-  const { theme } = useTheme();
   const router = useRouter();
 
   return (
     <span
-      className="flex items-center justify-center gap-4 cursor-pointer"
+      className="flex w-full items-center justify-start gap-4 cursor-pointer select-none pl-9 pr-20 min-h-8"
       onClick={() => router.push("/")}
     >
-      <Image
-        alt="OopsBudgeter Logo"
-        src={theme === "light" ? "/logo.png" : "/logo_dark.png"}
-        width={512}
-        height={512}
-        className="h-9 w-9"
-        draggable={false}
-      />
-      <h2 className="text-2xl font-semibold">OopsBudgeter</h2>
+      <span className="flex items-center gap-3">
+        <Image
+          alt="MyWorkIn"
+          src="/mw-logo-navy.png"
+          width={404}
+          height={88}
+          className="h-5 w-auto dark:hidden"
+          draggable={false}
+          priority
+        />
+        <Image
+          alt="MyWorkIn"
+          src="/mw-logo-white.png"
+          width={404}
+          height={88}
+          className="hidden h-5 w-auto dark:block"
+          draggable={false}
+          priority
+        />
+        <span className="h-5 w-px bg-border" />
+        <span className="text-[11px] font-semibold uppercase tracking-[0.13em] text-muted-foreground">
+          Gastos
+        </span>
+      </span>
     </span>
   );
 }

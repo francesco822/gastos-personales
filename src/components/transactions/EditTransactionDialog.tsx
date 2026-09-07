@@ -37,7 +37,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { expenseCategories, incomeCategories } from "@/lib/categories";
+import {
+  categoryLabel,
+  expenseCategories,
+  incomeCategories,
+} from "@/lib/categories";
 
 export default function EditTransactionDialog({
   trx,
@@ -75,9 +79,9 @@ export default function EditTransactionDialog({
           frequency,
         });
         setOpen(false);
-        toast.success("Transaction updated successfully");
+        toast.success("Movimiento actualizado");
       } else {
-        toast.error("Failed to update transaction");
+        toast.error("No se pudo actualizar el movimiento");
       }
     } catch (error) {
       console.error("Error updating transaction", error);
@@ -88,7 +92,7 @@ export default function EditTransactionDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild onClick={() => setOpen(true)}>
         <div className="text-white transition-colors flex items-center justify-between gap-1 cursor-pointer rounded-sm py-1 px-2 group hover:bg-accent text-sm">
-          <span>Edit Transaction</span>
+          <span>Editar movimiento</span>
           <Icon
             icon="line-md:edit"
             className="transition-colors duration-500"
@@ -101,16 +105,16 @@ export default function EditTransactionDialog({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit Transaction</DialogTitle>
+          <DialogTitle>Editar movimiento</DialogTitle>
           <DialogDescription className="flex flex-col gap-2">
-            <span>Update the amount for:</span>
+            <span>Actualiza los datos de:</span>
             <span className="font-semibold text-foreground/80">
-              {trx.category} – {trx.description}
+              {categoryLabel(trx.category)} – {trx.description}
             </span>
           </DialogDescription>
         </DialogHeader>
         <div className="flex justify-between">
-          <label>Amount</label>
+          <label>Monto</label>
           <Input
             type="number"
             value={amount}
@@ -119,7 +123,7 @@ export default function EditTransactionDialog({
           />
         </div>
         <div className="flex justify-between mt-2">
-          <label>Description</label>
+          <label>Descripción</label>
           <Input
             value={description!}
             onChange={(e) => setDescription(e.target.value)}
@@ -127,13 +131,13 @@ export default function EditTransactionDialog({
           />
         </div>
         <div className="flex justify-between mt-2 items-center">
-          <label>Category</label>
+          <label>Categoría</label>
           <Select
             value={category || "None"}
             onValueChange={(val) => setCategory(val)}
           >
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="None" />
+              <SelectValue placeholder="Ninguna" />
             </SelectTrigger>
             <SelectContent className="max-w-60 md:max-w-sm">
               {(trx.type === "income"
@@ -141,7 +145,7 @@ export default function EditTransactionDialog({
                 : expenseCategories
               ).map((cat, idx) => (
                 <SelectItem key={`${cat}-${idx}`} value={cat}>
-                  {cat}
+                  {categoryLabel(cat)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -149,7 +153,7 @@ export default function EditTransactionDialog({
         </div>
         {!trx.is_recurring && (
           <div className="flex justify-between mt-2 items-center">
-            <label>Make Recurring</label>
+            <label>Hacer recurrente</label>
             <Input
               type="checkbox"
               checked={isRecurring}
@@ -161,7 +165,7 @@ export default function EditTransactionDialog({
 
         {isRecurring && (
           <div className="flex justify-between items-center">
-            <label className="mt-2">Frequency</label>
+            <label className="mt-2">Frecuencia</label>
             <Select
               value={frequency ?? undefined}
               onValueChange={(val) =>
@@ -171,13 +175,13 @@ export default function EditTransactionDialog({
               }
             >
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select frequency" />
+                <SelectValue placeholder="Elige la frecuencia" />
               </SelectTrigger>
               <SelectContent className="border p-2 rounded-md text-base w-full max-w-56 md:max-w-sm">
-                <SelectItem value="daily">Daily</SelectItem>
-                <SelectItem value="weekly">Weekly</SelectItem>
-                <SelectItem value="monthly">Monthly</SelectItem>
-                <SelectItem value="yearly">Yearly</SelectItem>
+                <SelectItem value="daily">Diario</SelectItem>
+                <SelectItem value="weekly">Semanal</SelectItem>
+                <SelectItem value="monthly">Mensual</SelectItem>
+                <SelectItem value="yearly">Anual</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -188,13 +192,13 @@ export default function EditTransactionDialog({
             onClick={() => setOpen(false)}
             className="px-4 py-2 border rounded-md w-full"
           >
-            Cancel
+            Cancelar
           </button>
           <button
             onClick={handleUpdate}
             className="px-4 py-2 bg-blue-600 text-white rounded-md w-full"
           >
-            Save
+            Guardar
           </button>
         </DialogFooter>
       </DialogContent>

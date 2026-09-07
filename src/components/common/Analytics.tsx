@@ -20,6 +20,8 @@ import { useBudget } from "@/contexts/BudgetContext";
 import { getMonthlyTrends } from "@/lib/monthlyTrends";
 import { Icon } from "@iconify/react";
 import { addDays, format, formatISO } from "date-fns";
+import { es } from "date-fns/locale";
+import { categoryLabel } from "@/lib/categories";
 import React from "react";
 import * as Recharts from "recharts";
 import PriceDisplay from "./Currency";
@@ -28,6 +30,16 @@ import {
   getSpendingInsights,
   predictNextMonthSpending,
 } from "@/lib/my1DollarAI";
+
+const serieLabel = (key: string) =>
+  ({
+    income: "Ingresos",
+    expenses: "Gastos",
+    balance: "Saldo",
+    amount: "Monto",
+    predictedIncome: "Ingresos previstos",
+    predictedExpenses: "Gastos previstos",
+  }[key] ?? key);
 
 export const chartColors = [
   "#2DAC64",
@@ -53,7 +65,7 @@ export default function AnalyticsWrapper() {
   const categoryTotals = transactions
     .filter((trx) => trx.type === "expense")
     .reduce((acc: Record<string, number>, trx) => {
-      const category = trx.category ?? "Uncategorized";
+      const category = categoryLabel(trx.category);
 
       if (!acc[category]) acc[category] = 0;
       acc[category] += trx.amount;
@@ -70,16 +82,20 @@ export default function AnalyticsWrapper() {
   );
 
   const netWorthTrend = transactions.reduce(
-    (acc: Record<string, { name: string; balance: number }>, trx) => {
-      const month = format(new Date(trx.date), "MMM yyy");
-      if (!acc[month]) acc[month] = { name: month, balance: 0 };
-      acc[month].balance += trx.type === "income" ? trx.amount : -trx.amount;
+    (
+      acc: Record<string, { name: string; key: string; balance: number }>,
+      trx
+    ) => {
+      const key = format(new Date(trx.date), "yyyy-MM");
+      const month = format(new Date(trx.date), "MMM yyyy", { locale: es });
+      if (!acc[key]) acc[key] = { name: month, key, balance: 0 };
+      acc[key].balance += trx.type === "income" ? trx.amount : -trx.amount;
       return acc;
     },
     {}
   );
-  const netWorthData = Object.values(netWorthTrend).sort(
-    (a, b) => new Date(a.name).getTime() - new Date(b.name).getTime()
+  const netWorthData = Object.values(netWorthTrend).sort((a, b) =>
+    a.key.localeCompare(b.key)
   );
 
   const savingsRate =
@@ -88,19 +104,19 @@ export default function AnalyticsWrapper() {
   const monthsTracked = new Set(
     transactions
       .filter((trx) => trx.date)
-      .map((trx) => format(new Date(trx.date), "MMM yyy"))
+      .map((trx) => format(new Date(trx.date), "yyyy-MM"))
   ).size;
   const avgSpending = monthsTracked > 0 ? totalExpenses / monthsTracked : 0;
 
   const categoryTrends = transactions
     .filter((trx) => trx.type === "expense")
     .reduce((acc: Record<string, Record<string, number>>, trx) => {
-      const month = format(new Date(trx.date), "MMM yyyy");
+      const month = format(new Date(trx.date), "MMM yyyy", { locale: es });
 
       if (!acc[month]) acc[month] = {};
 
-      acc[month][trx.category ?? "Uncategorized"] =
-        (acc[month][trx.category ?? "Uncategorized"] || 0) + trx.amount;
+      acc[month][categoryLabel(trx.category)] =
+        (acc[month][categoryLabel(trx.category)] || 0) + trx.amount;
 
       return acc;
     }, {});
@@ -166,18 +182,16 @@ export default function AnalyticsWrapper() {
             width={22}
             className="cursor-pointer"
           />
-          OopsStats + fakeAI
+          Análisis de tus finanzas
         </h1>
         <span className="text-muted-foreground text-center max-w-xl">
-          In this page we break down your finances so you can pretend to have
-          control over them. See exactly how much you spent on ‘necessary’
-          impulse buys and why your bank account is crying. No refunds, just
-          regrets!
+          Aquí desglosamos tus ingresos y gastos para que veas en qué se te va
+          la plata y tomes mejores decisiones el próximo mes.
         </span>
       </div>
 
       <div className="bg-background p-4 rounded-lg text-center">
-        <h2 className="text-lg font-semibold">💰 Savings Rate</h2>
+        <h2 className="text-lg font-semibold">💰 Tasa de ahorro</h2>
         <p
           className={`text-2xl font-bold ${
             savingsRate < 20 ? "text-red-500" : "text-green-500"
@@ -186,13 +200,13 @@ export default function AnalyticsWrapper() {
           {savingsRate.toFixed(2)}%
         </p>
         {savingsRate < 20 && (
-          <p className="text-red-400">Bruh, stop spending 😱💸</p>
+          <p className="text-red-400">Estás ahorrando menos del 20 % 😱</p>
         )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-background p-4 rounded-lg text-center">
-          <h2 className="text-lg font-semibold">📉 Average Monthly Spending</h2>
+          <h2 className="text-lg font-semibold">📉 Gasto promedio mensual</h2>
           <p className="text-2xl font-bold text-yellow-500">
             <PriceDisplay
               trx={{
@@ -203,7 +217,7 @@ export default function AnalyticsWrapper() {
         </div>
 
         <div className="bg-background p-4 rounded-lg text-center">
-          <h2 className="text-lg font-semibold">🔥 No-Spend Streak</h2>
+          <h2 className="text-lg font-semibold">🔥 Racha sin gastar</h2>
           <p className="text-2xl font-bold text-green-500">
             {getNoSpendStreak(transactions)}
           </p>
@@ -211,7 +225,7 @@ export default function AnalyticsWrapper() {
 
         <div className="bg-background p-4 rounded-lg text-center">
           <h2 className="text-lg font-semibold">
-            💸 Biggest Spending Category
+            💸 Categoría con más gasto
           </h2>
           <p className="text-2xl font-bold text-red-500">
             {getSpendingInsights(filteredTransactions)}
@@ -220,7 +234,7 @@ export default function AnalyticsWrapper() {
 
         <div className="bg-background p-4 rounded-lg text-center">
           <h2 className="text-lg font-semibold">
-            📊 Next Months Predicted Spending
+            📊 Gasto estimado del próximo mes
           </h2>
           <p className="text-2xl font-bold text-orange-500">
             {predictNextMonthSpending(filteredTransactions)}
@@ -229,7 +243,7 @@ export default function AnalyticsWrapper() {
       </div>
 
       <div className="bg-background p-4 rounded-lg">
-        <h2 className="text-lg font-semibold mb-2">💰 Income vs. Expenses</h2>
+        <h2 className="text-lg font-semibold mb-2">💰 Ingresos vs. gastos</h2>
         <Recharts.ResponsiveContainer width="100%" height={300}>
           <Recharts.BarChart
             data={[
@@ -244,7 +258,7 @@ export default function AnalyticsWrapper() {
                   return (
                     <div className="bg-background p-2 rounded-md text-foreground shadow-md">
                       <p className="font-bold">
-                        {payload[0]?.payload?.name ?? "Unknown"}
+                        {payload[0]?.payload?.name ?? "Total"}
                       </p>
                       {payload.map((entry, index) => {
                         const key = String(entry.dataKey);
@@ -261,7 +275,7 @@ export default function AnalyticsWrapper() {
                                   : "text-red-500"
                               }
                             >
-                              {key.charAt(0).toUpperCase() + key.slice(1)}:
+                              {serieLabel(key)}:
                             </span>
                             <PriceDisplay trx={{ amount: Number(amount) }} />
                           </p>
@@ -273,7 +287,7 @@ export default function AnalyticsWrapper() {
                 return null;
               }}
             />
-            <Recharts.Legend />
+            <Recharts.Legend formatter={(v) => serieLabel(String(v))} />
             <Recharts.Bar dataKey="income" fill="#2DAC64" />
             <Recharts.Bar dataKey="expenses" fill="#E24444" />
           </Recharts.BarChart>
@@ -281,7 +295,7 @@ export default function AnalyticsWrapper() {
       </div>
 
       <div className="bg-background p-4 rounded-lg">
-        <h2 className="text-lg font-semibold mb-2">💸 Spending Breakdown</h2>
+        <h2 className="text-lg font-semibold mb-2">💸 Gastos por categoría</h2>
         <Recharts.ResponsiveContainer width="100%" height={300}>
           <Recharts.PieChart>
             <Recharts.Pie
@@ -303,10 +317,10 @@ export default function AnalyticsWrapper() {
                   return (
                     <div className="bg-background p-2 rounded-md text-foreground shadow-md">
                       <p className="font-bold">
-                        {data.name ?? "Uncategorized"}
+                        {data.name ?? "Sin categoría"}
                       </p>
                       <p>
-                        💰 Total Spent:{" "}
+                        💰 Total gastado:{" "}
                         <PriceDisplay
                           trx={{
                             amount:
@@ -327,7 +341,7 @@ export default function AnalyticsWrapper() {
       </div>
 
       <div className="bg-background p-4 rounded-lg">
-        <h2 className="text-lg font-semibold mb-2">📈 Monthly Trends</h2>
+        <h2 className="text-lg font-semibold mb-2">📈 Tendencia mensual</h2>
         <Recharts.ResponsiveContainer width="100%" height={300}>
           <Recharts.LineChart data={monthlyTrend}>
             <Recharts.XAxis dataKey="name" />
@@ -338,7 +352,7 @@ export default function AnalyticsWrapper() {
                   return (
                     <div className="bg-background p-2 rounded-md text-foreground shadow-md">
                       <p className="font-bold">
-                        {payload[0]?.payload?.name ?? "Unknown Month"}
+                        {payload[0]?.payload?.name ?? "Mes desconocido"}
                       </p>
                       {payload.map((entry, index) => {
                         const key = String(entry.dataKey);
@@ -357,7 +371,7 @@ export default function AnalyticsWrapper() {
                                   : "text-foreground"
                               }
                             >
-                              {key.charAt(0).toUpperCase() + key.slice(1)}:
+                              {serieLabel(key)}:
                             </span>
                             <PriceDisplay trx={{ amount: Number(amount) }} />
                           </p>
@@ -369,7 +383,7 @@ export default function AnalyticsWrapper() {
                 return null;
               }}
             />
-            <Recharts.Legend />
+            <Recharts.Legend formatter={(v) => serieLabel(String(v))} />
             <Recharts.Line
               type="monotone"
               dataKey="income"
@@ -388,7 +402,7 @@ export default function AnalyticsWrapper() {
 
       <div className="bg-background p-4 rounded-lg">
         <h2 className="text-lg font-semibold mb-2">
-          🌊 Expense Trends by Category
+          🌊 Gastos por categoría en el tiempo
         </h2>
         <Recharts.ResponsiveContainer width="100%" height={300}>
           <Recharts.AreaChart data={monthlyCategoryTrends}>
@@ -400,7 +414,7 @@ export default function AnalyticsWrapper() {
                   return (
                     <div className="bg-background p-2 rounded-md text-foreground shadow-md">
                       <p className="font-bold">
-                        {payload[0]?.payload?.name ?? "Unknown Month"}
+                        {payload[0]?.payload?.name ?? "Mes desconocido"}
                       </p>
                       {payload.map((entry, index) => {
                         const key = String(entry.dataKey);
@@ -425,7 +439,7 @@ export default function AnalyticsWrapper() {
                                   color: color,
                                 }}
                               >
-                                {key.charAt(0).toUpperCase() + key.slice(1)}:
+                                {serieLabel(key)}:
                               </span>
                             </span>
                             <PriceDisplay trx={{ amount: Number(amount) }} />
@@ -438,7 +452,7 @@ export default function AnalyticsWrapper() {
                 return null;
               }}
             />
-            <Recharts.Legend />
+            <Recharts.Legend formatter={(v) => serieLabel(String(v))} />
             {Object.keys(
               categoryTrends[Object.keys(categoryTrends)[0]] ?? {}
             ).map((cat, idx) => (
@@ -456,7 +470,7 @@ export default function AnalyticsWrapper() {
 
       <div className="bg-background p-4 rounded-lg">
         <h2 className="text-lg font-semibold mb-2">
-          💸 Top 5 Biggest Transactions
+          💸 Los 5 movimientos más grandes
         </h2>
         <Recharts.ResponsiveContainer width="100%" height={300}>
           <Recharts.BarChart data={topTransactions}>
@@ -469,12 +483,12 @@ export default function AnalyticsWrapper() {
                   return (
                     <div className="bg-background p-2 rounded-md text-foreground">
                       <p>
-                        💰 Amount:{" "}
+                        💰 Monto:{" "}
                         <PriceDisplay
                           trx={{ amount: data.amount.toFixed(2) }}
                         />
                       </p>
-                      <p>📂 Category: {data.category ?? "Uncategorized"}</p>
+                      <p>📂 Categoría: {categoryLabel(data.category)}</p>
                       <p className="text-sm">{data.description}</p>
                     </div>
                   );
@@ -482,14 +496,14 @@ export default function AnalyticsWrapper() {
                 return null;
               }}
             />
-            <Recharts.Legend />
+            <Recharts.Legend formatter={(v) => serieLabel(String(v))} />
             <Recharts.Bar dataKey="amount" fill="#FFB02E" />
           </Recharts.BarChart>
         </Recharts.ResponsiveContainer>
       </div>
 
       <div className="bg-background p-4 rounded-lg">
-        <h2 className="text-lg font-semibold mb-2">📈 Net Worth Over Time</h2>
+        <h2 className="text-lg font-semibold mb-2">📈 Saldo acumulado en el tiempo</h2>
         <Recharts.ResponsiveContainer width="100%" height={300}>
           <Recharts.LineChart data={netWorthData}>
             <Recharts.XAxis dataKey="name" />
@@ -502,7 +516,7 @@ export default function AnalyticsWrapper() {
                     <div className="bg-background p-2 rounded-md text-foreground shadow-md">
                       <p className="font-bold">{data.name}</p>
                       <p>
-                        📊 Balance:{" "}
+                        📊 Saldo:{" "}
                         <PriceDisplay
                           trx={{ amount: data.balance.toFixed(2) }}
                         />
@@ -513,7 +527,7 @@ export default function AnalyticsWrapper() {
                 return null;
               }}
             />{" "}
-            <Recharts.Legend />
+            <Recharts.Legend formatter={(v) => serieLabel(String(v))} />
             <Recharts.Line
               type="monotone"
               dataKey="balance"
@@ -526,7 +540,7 @@ export default function AnalyticsWrapper() {
 
       <div className="bg-background p-4 rounded-lg">
         <h2 className="text-lg font-semibold mb-2">
-          🔮 Predicted Balance (Next 30 Days)
+          🔮 Saldo proyectado (próximos 30 días)
         </h2>
         <Recharts.ResponsiveContainer width="100%" height={300}>
           <Recharts.LineChart data={futurePredictedBalances}>
@@ -540,19 +554,19 @@ export default function AnalyticsWrapper() {
                     <div className="bg-background p-2 rounded-md text-foreground shadow-md">
                       <p className="font-bold">{data.date}</p>
                       <p>
-                        💸 Predicted Balance:{" "}
+                        💸 Saldo proyectado:{" "}
                         <PriceDisplay
                           trx={{ amount: data.balance.toFixed(2) }}
                         />
                       </p>
                       <p>
-                        💚 Predicted Income:{" "}
+                        💚 Ingresos previstos:{" "}
                         <PriceDisplay
                           trx={{ amount: data.predictedIncome.toFixed(2) }}
                         />
                       </p>
                       <p>
-                        ❤️ Predicted Expenses:{" "}
+                        ❤️ Gastos previstos:{" "}
                         <PriceDisplay
                           trx={{ amount: data.predictedExpenses.toFixed(2) }}
                         />
@@ -563,7 +577,7 @@ export default function AnalyticsWrapper() {
                 return null;
               }}
             />
-            <Recharts.Legend />
+            <Recharts.Legend formatter={(v) => serieLabel(String(v))} />
             <Recharts.Line
               type="monotone"
               dataKey="balance"

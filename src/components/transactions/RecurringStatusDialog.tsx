@@ -37,6 +37,7 @@ import {
 import { Label } from "../ui/label";
 import { toast } from "sonner";
 import { useBudget } from "@/contexts/BudgetContext";
+import { categoryLabel } from "@/lib/categories";
 
 export default function RecurringStatusDialog({
   trx,
@@ -56,7 +57,7 @@ export default function RecurringStatusDialog({
       if (res.ok) {
         updateTransactionStatus(trx.id, newStatus);
         setConfirmOpen(false);
-        toast.success("The transaction status has been updated successfully");
+        toast.success("Estado del movimiento actualizado");
       } else {
         console.error("Failed to update transaction");
       }
@@ -76,7 +77,7 @@ export default function RecurringStatusDialog({
     <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
       <DialogTrigger asChild onClick={() => setConfirmOpen(true)}>
         <div className="text-white transition-colors flex items-center justify-between gap-1 cursor-pointer rounded-sm py-1 px-2 group hover:bg-accent text-sm">
-          <span>Change Status</span>
+          <span>Cambiar estado</span>
           <Icon
             icon="fluent:calendar-arrow-repeat-all-16-filled"
             className="transition-colors duration-500"
@@ -89,34 +90,42 @@ export default function RecurringStatusDialog({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Change Recurring Status</DialogTitle>
+          <DialogTitle>Estado del movimiento recurrente</DialogTitle>
           <DialogDescription className="flex flex-col gap-2">
             <span>
-              Here you can change the status of your recurring transaction:
+              Aquí puedes cambiar el estado de tu movimiento recurrente:
             </span>
             <span className="font-semibold text-foreground/80">
-              {trx.category} - {trx.description}
+              {categoryLabel(trx.category)} - {trx.description}
             </span>
           </DialogDescription>
         </DialogHeader>
         <div className="flex justify-between">
-          <Label>Status</Label>
+          <Label>Estado</Label>
           <Select
             defaultValue={newStatus}
             onValueChange={(value) => setNewStatus(value)}
           >
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder={newStatus} />
+              <SelectValue
+                placeholder={
+                  newStatus === "active"
+                    ? "Activo"
+                    : newStatus === "paused"
+                    ? "Pausado"
+                    : "Cancelado"
+                }
+              />
             </SelectTrigger>
             <SelectContent className="border p-2 rounded-md text-base w-full max-w-56 md:max-w-sm">
               <SelectItem value="active" className="text-[#3E70CC]">
-                Active
+                Activo
               </SelectItem>
               <SelectItem value="paused" className="text-[#DDBF3B]">
-                Paused
+                Pausado
               </SelectItem>
               <SelectItem value="canceled" className="text-[#E46060]">
-                Canceled
+                Cancelado
               </SelectItem>
             </SelectContent>
           </Select>
@@ -126,13 +135,13 @@ export default function RecurringStatusDialog({
             onClick={() => setConfirmOpen(false)}
             className="px-4 py-2 border rounded-md w-full"
           >
-            Cancel
+            Cancelar
           </button>
           <button
             onClick={handleUpdate}
             className="px-4 py-2 bg-blue-600 text-white rounded-md w-full"
           >
-            Update
+            Actualizar
           </button>
         </DialogFooter>
       </DialogContent>

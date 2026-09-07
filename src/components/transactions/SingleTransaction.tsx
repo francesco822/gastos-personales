@@ -47,7 +47,7 @@ export default function SingleTransaction({
 
   const getCategoryColor = (category: string) => {
     const match = categoryColors.find((c) => c.category === category);
-    if (category === "Other") return "#8D68D6";
+    if (category === "Otro") return "#8D68D6";
     return match ? match.color : "#CCCCCC";
   };
 
@@ -165,7 +165,7 @@ export default function SingleTransaction({
               className="flex justify-between"
               onClick={() => printReceipt(trx, currency)}
             >
-              Print Receipt
+              Imprimir comprobante
               <Icon
                 icon="line-md:downloading-loop"
                 className="min-w-5 min-h-5 text-purple-500"

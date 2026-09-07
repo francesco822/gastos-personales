@@ -78,9 +78,9 @@ export function Settings() {
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Settings</DialogTitle>
+            <DialogTitle>Ajustes</DialogTitle>
             <DialogDescription>
-              Customize your budget app settings
+              Personaliza tu administrador de gastos
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -90,17 +90,17 @@ export function Settings() {
                   href="https://en.wikipedia.org/wiki/ISO_4217"
                   target="_blank"
                   rel="noopener noreferrer"
-                  title="Learn more about ISO 4217 currency codes"
+                  title="Códigos de moneda ISO 4217"
                   className="hover:underline cursor-pointer"
                 >
-                  Currency:
+                  Moneda:
                 </Link>
                 <Select
                   value={currency}
                   onValueChange={(value) => updateCurrency(value)}
                 >
                   <SelectTrigger className="w-[200px]">
-                    <SelectValue placeholder="Select currency" />
+                    <SelectValue placeholder="Elige la moneda" />
                   </SelectTrigger>
                   <SelectContent>
                     {supportedCurrencies.map((curr) => (
@@ -113,7 +113,7 @@ export function Settings() {
               </div>
             </div>
             <div className="hidden md:flex justify-between items-center">
-              <label>App Width:</label>
+              <label>Ancho de la app:</label>
               <div className="flex gap-4">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <Input
@@ -122,7 +122,7 @@ export function Settings() {
                     checked={appWidth === "Compact"}
                     onChange={() => setAppWidth("Compact")}
                   />
-                  Compact
+                  Compacto
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <Input
@@ -136,7 +136,7 @@ export function Settings() {
               </div>
             </div>
             <div className="flex justify-between items-center">
-              <label>Colorful Categories:</label>
+              <label>Categorías con color:</label>
               <div className="flex gap-4">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <Input
@@ -145,7 +145,7 @@ export function Settings() {
                     checked={colorfulCategories === "Off"}
                     onChange={() => setColorfulCategories("Off")}
                   />
-                  Off
+                  No
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <Input
@@ -154,12 +154,12 @@ export function Settings() {
                     checked={colorfulCategories === "On"}
                     onChange={() => setColorfulCategories("On")}
                   />
-                  On
+                  Sí
                 </label>
               </div>
             </div>
             <div className="flex justify-between items-center">
-              <label>Colorful Transactions:</label>
+              <label>Movimientos con color:</label>
               <div className="flex gap-4">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <Input
@@ -168,7 +168,7 @@ export function Settings() {
                     checked={colorfulTransactions === "Off"}
                     onChange={() => setColorfulTransactions("Off")}
                   />
-                  Off
+                  No
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <Input
@@ -177,12 +177,12 @@ export function Settings() {
                     checked={colorfulTransactions === "On"}
                     onChange={() => setColorfulTransactions("On")}
                   />
-                  On
+                  Sí
                 </label>
               </div>
             </div>
             <div className="flex justify-between items-center">
-              <label>Sound Effects:</label>
+              <label>Sonidos:</label>
               <div className="flex gap-4">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <Input
@@ -191,7 +191,7 @@ export function Settings() {
                     checked={soundEffects === "Off"}
                     onChange={() => setSoundEffects("Off")}
                   />
-                  Off
+                  No
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <Input
@@ -200,12 +200,12 @@ export function Settings() {
                     checked={soundEffects === "On"}
                     onChange={() => setSoundEffects("On")}
                   />
-                  On
+                  Sí
                 </label>
               </div>
             </div>
             <div className="flex justify-between items-center">
-              <label>Show Original Amount:</label>
+              <label>Mostrar monto original:</label>
               <div className="flex gap-4">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <Input
@@ -214,7 +214,7 @@ export function Settings() {
                     checked={showOriginalAmount === "Off"}
                     onChange={() => setShowOriginalAmount("Off")}
                   />
-                  Off
+                  No
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <Input
@@ -223,13 +223,13 @@ export function Settings() {
                     checked={showOriginalAmount === "On"}
                     onChange={() => setShowOriginalAmount("On")}
                   />
-                  On
+                  Sí
                 </label>
               </div>
             </div>
           </div>
           <div className="mt-4 text-sm text-muted-foreground text-center border-t pt-3">
-            Built with ❤️ by{" "}
+            Basado en OopsBudgeter de{" "}
             <a
               href="https://iconical.dev"
               target="_blank"
@@ -238,10 +238,10 @@ export function Settings() {
             >
               Iconical
             </a>
-            <div className="mt-1">Version: {pkg.version}</div>
+            <div className="mt-1">Versión: {pkg.version}</div>
             {latestVersion && latestVersion.replace(/^v/, "") > pkg.version && (
               <div className="mt-1 text-orange-500">
-                🚨 New update available:{" "}
+                🚨 Nueva versión del original disponible:{" "}
                 <a
                   href={`https://github.com/oopsapps/oopsbudgeter/releases/tag/${latestVersion}`}
                   target="_blank"

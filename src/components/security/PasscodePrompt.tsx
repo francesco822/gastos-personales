@@ -54,7 +54,7 @@ export default function PasscodePrompt({
       localStorage.setItem("expiryTime", expiryTime.toString());
       onPasscodeValid();
     } else {
-      setError("Incorrect passcode. Please try again.");
+      setError("PIN incorrecto. Inténtalo de nuevo.");
     }
   };
 
@@ -79,7 +79,7 @@ export default function PasscodePrompt({
         className="flex flex-col items-center justify-between p-10 max-w-sm max-h-60 bg-secondary"
       >
         <ThemeToggle />
-        <h2>Enter Pin</h2>
+        <h2>Ingresa tu PIN</h2>
         <InputOTP
           maxLength={6}
           onChange={(value) => {
@@ -105,7 +105,7 @@ export default function PasscodePrompt({
           bgColor="#684444"
           onClick={() => handleSubmit()}
         >
-          Confirm
+          Entrar
         </HoverEffect>
         {error && (
           <div className="bg-red-500/25 text-red-500 rounded-lg p-1 px-2 text-sm absolute bottom-1.5">

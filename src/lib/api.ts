@@ -21,12 +21,12 @@ import { toast } from "sonner";
 export const fetchTransactions = async (): Promise<selectTransactionType[]> => {
   try {
     const response = await fetch("/api/transactions");
-    if (!response.ok) throw new Error("Failed to fetch transactions");
+    if (!response.ok) throw new Error("No se pudieron cargar los movimientos");
 
     const data = await response.json();
     return data.transactions;
   } catch (error) {
-    toast.error(`Error fetching transactions: ${error}`);
+    toast.error(`Error al cargar los movimientos: ${error}`);
     return [];
   }
 };

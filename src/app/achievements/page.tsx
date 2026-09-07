@@ -19,7 +19,7 @@ import { generateMetadata } from "@/lib/head";
 import AchievementsWrapper from "@/components/common/AchievementsWrapper";
 
 export const metadata = generateMetadata({
-  title: "Achievements",
+  title: "Logros",
 });
 
 export default function Achievements() {

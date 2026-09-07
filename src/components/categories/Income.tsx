@@ -24,7 +24,7 @@ export default function Income() {
 
   return (
     <InExCard
-      title="Income"
+      title="Ingresos"
       amount={totalIncome}
       onClick={() =>
         filterByType(transactionTypeFilter === "income" ? "all" : "income")

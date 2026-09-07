@@ -19,7 +19,7 @@ import AnalyticsWrapper from "@/components/common/Analytics";
 import { generateMetadata } from "@/lib/head";
 
 export const metadata = generateMetadata({
-  title: "Analytics",
+  title: "Análisis",
 });
 
 export default function Analytics() {

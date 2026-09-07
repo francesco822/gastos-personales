@@ -18,13 +18,13 @@
 export const formatDate = (date: string) => {
   const newDate = new Date(date);
 
-  return newDate.toLocaleString("en-US", {
+  return newDate.toLocaleString("es-PE", {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
-    hour12: true,
+    hour12: false,
   });
 };

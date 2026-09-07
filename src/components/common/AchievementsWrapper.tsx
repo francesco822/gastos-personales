@@ -32,7 +32,7 @@ export default function AchievementsWrapper() {
       if (Array.isArray(data)) {
         setUnlockedIds(data.map((a) => a.id?.toString?.() ?? a.toString()));
       } else {
-        console.error("Invalid achievements data:", data);
+        console.error("Datos de logros inválidos:", data);
       }
     }
     fetchUnlocked();
@@ -40,7 +40,7 @@ export default function AchievementsWrapper() {
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6 text-center">Achievements 🎯</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center">Logros 🎯</h1>
       <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
         {achievements.map((a) => {
           const unlocked = unlockedIds.includes(a.id);

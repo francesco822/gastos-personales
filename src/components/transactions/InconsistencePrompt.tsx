@@ -46,23 +46,23 @@ export function AmountMismatchDialog({
       <DialogTrigger asChild>
         <button
           className="text-yellow-500 hover:text-yellow-600"
-          title="Amount inconsistency"
+          title="Monto por confirmar"
         >
           <Icon icon="mdi:alert-circle" width={18} />
         </button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Update Actual Amount</DialogTitle>
+          <DialogTitle>Confirmar monto real</DialogTitle>
           <DialogDescription>
-            This recurring transaction has a different amount than expected.
-            Would you like to update it?
+            Este movimiento tiene un monto por confirmar. ¿Quieres actualizarlo
+            con el monto real?
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-2">
           <Input
             type="number"
-            placeholder="Enter actual amount"
+            placeholder="Monto real"
             value={actualAmount}
             onChange={(e) => setActualAmount(parseFloat(e.target.value))}
             className="w-full"
@@ -70,7 +70,7 @@ export function AmountMismatchDialog({
         </div>
         <DialogFooter className="flex justify-end gap-2">
           <Button variant="outline" onClick={handleConfirm}>
-            Keep
+            Confirmar
           </Button>
         </DialogFooter>
       </DialogContent>

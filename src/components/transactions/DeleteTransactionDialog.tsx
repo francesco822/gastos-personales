@@ -56,7 +56,7 @@ export default function DeleteTransactionDialog({
 
     if (response.ok) {
       removeTransaction(id);
-      toast.success("The transaction has been deleted successfully");
+      toast.success("Movimiento eliminado");
       const audio = new Audio("/audio/delete.wav");
       audio.volume = 0.4;
       if (soundEffects === "On") {
@@ -71,7 +71,7 @@ export default function DeleteTransactionDialog({
     <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
       <AlertDialogTrigger asChild>
         <div className="text-white transition-colors flex items-center justify-between gap-4 cursor-pointer rounded-sm py-1 px-2 group hover:bg-accent text-sm">
-          <span>Delete Transaction</span>
+          <span>Eliminar movimiento</span>
           <Icon
             icon="mdi:trash-can-empty"
             width={22}
@@ -81,9 +81,9 @@ export default function DeleteTransactionDialog({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Confirm Deletion</AlertDialogTitle>
+          <AlertDialogTitle>Confirmar eliminación</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete this transaction of{" "}
+            ¿Seguro que quieres eliminar este movimiento de{" "}
             <PriceDisplay
               trx={{
                 amount: trx.amount,
@@ -93,11 +93,11 @@ export default function DeleteTransactionDialog({
                 trx.type === "income" ? "text-[#42cf7f]" : "text-[#e24444]"
               )}
             />{" "}
-            made on{" "}
+            registrado el{" "}
             <span className="text-black/80 dark:text-white/80">
               {formatDate(trx.date)}
             </span>
-            ? This action cannot be undone.
+            ? Esta acción no se puede deshacer.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="w-full mt-2">
@@ -105,13 +105,13 @@ export default function DeleteTransactionDialog({
             onClick={() => setConfirmOpen(false)}
             className="px-4 py-2 border rounded-md w-full"
           >
-            Cancel
+            Cancelar
           </button>
           <button
             onClick={() => handleDelete(trx.id)}
             className="px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded-md w-full"
           >
-            Yes, Delete
+            Sí, eliminar
           </button>
         </AlertDialogFooter>
       </AlertDialogContent>

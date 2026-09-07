@@ -255,7 +255,7 @@ export const BudgetProvider = ({ children }: { children: React.ReactNode }) => {
           console.error("Failed to save achievement:", id, e);
         }
 
-        toast.success(`🎉 Unlocked: ${achievement.title}`);
+        toast.success(`🎉 Logro desbloqueado: ${achievement.title}`);
         if (soundEffects === "On") {
           const audio = new Audio("/audio/yay.mp3");
           audio.volume = 0.1;

@@ -41,28 +41,28 @@ export default function SortButtons() {
           sortKey={sortKey}
           icon="mdi:recent"
           onClick={() => sortTransactions("id")}
-          popTitle="Sort by Recent Transactions"
+          popTitle="Ordenar por más recientes"
         />
         <SortButton
           sId="amount"
           sortKey={sortKey}
           icon="mdi:cash-multiple"
           onClick={() => sortTransactions("amount")}
-          popTitle="Sort by Amount"
+          popTitle="Ordenar por monto"
         />
         <SortButton
           sId="date"
           sortKey={sortKey}
           icon="line-md:calendar"
           onClick={() => sortTransactions("date")}
-          popTitle="Sort by Date"
+          popTitle="Ordenar por fecha"
         />
         <SortButton
           sId="recurring"
           sortKey={sortKey}
           icon="fluent:calendar-arrow-repeat-all-16-filled"
           onClick={() => sortTransactions("recurring")}
-          popTitle="View Recurring Transactions"
+          popTitle="Ver movimientos recurrentes"
         />
       </div>
 
@@ -75,7 +75,7 @@ export default function SortButtons() {
         className="text-green-500 transition-all"
         onClick={() => toggleSortOrder()}
         popTitle={
-          sortOrder === "asc" ? "Sort by Ascending" : "Sort by Descending"
+          sortOrder === "asc" ? "Orden ascendente" : "Orden descendente"
         }
       />
     </div>

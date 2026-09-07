@@ -7,7 +7,7 @@ import TransactionsList from "@/components/transactions/TransactionsList";
 import { generateMetadata } from "@/lib/head";
 
 export const metadata = generateMetadata({
-  title: "Dashboard",
+  title: "Inicio",
 });
 
 export default function Home() {

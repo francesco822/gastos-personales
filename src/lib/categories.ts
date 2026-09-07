@@ -17,20 +17,24 @@
 
 export const incomeCategories = [
   "None",
-  "Salary",
+  "Sueldo",
   "Freelance",
-  "Investment",
-  "Bonus",
-  "Other",
+  "Inversión",
+  "Bono",
+  "Otro",
 ];
 
 export const expenseCategories = [
   "None",
-  "Food",
-  "Rent",
-  "Utilities",
-  "Transport",
-  "Entertainment",
-  "Shopping",
-  "Other",
+  "Comida",
+  "Alquiler",
+  "Servicios",
+  "Transporte",
+  "Entretenimiento",
+  "Compras",
+  "Otro",
 ];
+
+// Texto visible para el valor interno "None".
+export const categoryLabel = (cat?: string | null) =>
+  !cat || cat === "None" ? "Ninguna" : cat;

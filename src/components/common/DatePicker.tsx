@@ -18,6 +18,7 @@
 
 import { useBudget } from "@/contexts/BudgetContext";
 import { format } from "date-fns";
+import { es } from "date-fns/locale";
 import HoverEffect from "../effects/HoverEffect";
 
 export default function DateRangePicker() {
@@ -40,9 +41,9 @@ export default function DateRangePicker() {
         className="border p-2 rounded-md text-base"
       />
       <span className="text-base font-semibold items-center gap-2 hidden md:flex">
-        {format(startDate, "MMM d")}
+        {format(startDate, "d MMM", { locale: es })}
         <p>-</p>
-        {format(endDate, "MMM d")}
+        {format(endDate, "d MMM", { locale: es })}
       </span>
       <p className="flex md:hidden">-</p>
       <input

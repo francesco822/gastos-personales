@@ -30,28 +30,28 @@ export const insertTransactionSchema = createInsertSchema(transactions, {
           : undefined,
       z
         .number({
-          required_error: "Amount is required",
-          invalid_type_error: "Amount must be a number",
+          required_error: "El monto es obligatorio",
+          invalid_type_error: "El monto debe ser un número",
         })
-        .min(0.01, "Amount must be greater than 0")
-        .positive("Amount must be a positive number")
+        .min(0.01, "El monto debe ser mayor a 0")
+        .positive("El monto debe ser positivo")
         .refine((val) => /^[0-9]+(\.[0-9]{1,2})?$/.test(val.toString()), {
-          message: "Amount must be a valid decimal number (up to 2 decimals)",
+          message: "El monto debe tener como máximo 2 decimales",
         })
     ),
   description: (schema) =>
     schema
       .max(
         100,
-        "You have reached the maximum characters allowed for a description (100 characters)"
+        "La descripción no puede pasar de 100 caracteres"
       )
       .optional(),
   date: () =>
     z.preprocess(
       (val) => (typeof val === "string" ? new Date(val) : val),
       z.date({
-        required_error: "Date is required",
-        invalid_type_error: "Invalid date format",
+        required_error: "La fecha es obligatoria",
+        invalid_type_error: "Formato de fecha inválido",
       })
     ),
   is_actual: (schema) => schema.default(true),

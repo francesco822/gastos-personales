@@ -24,7 +24,7 @@ export default function Expense() {
 
   return (
     <InExCard
-      title="Expenses"
+      title="Gastos"
       amount={totalExpense}
       onClick={() =>
         filterByType(transactionTypeFilter === "expense" ? "all" : "expense")

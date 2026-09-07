@@ -47,7 +47,7 @@ export default function BalanceCard() {
               : "opacity-100 translate-y-0"
           }`}
         >
-          {balanceMode === "total" ? "Total Balance" : "Timeframe Balance"}
+          {balanceMode === "total" ? "Saldo total" : "Saldo del periodo"}
           <Icon
             onClick={() => handleMode()}
             icon="line-md:filter"
