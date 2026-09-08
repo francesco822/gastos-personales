@@ -50,11 +50,11 @@ export default function PasscodeWrapper({
   if (isLoading) return null;
 
   return (
-    <div>
+    <div className="w-full">
       {!isAuthenticated ? (
         <PasscodePrompt onPasscodeValid={handlePasscodeValid} />
       ) : (
-        <div>{children}</div>
+        <div className="w-full">{children}</div>
       )}
     </div>
   );
