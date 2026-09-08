@@ -53,7 +53,7 @@ export default function SortButtons() {
           </button>
         ))}
       </div>
-      <div className="flex items-center gap-1 text-xs text-muted-foreground">
+      <div className="flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
         <span className="mr-1">Ordenar por</span>
         {ORDENES.map((o) => (
           <button

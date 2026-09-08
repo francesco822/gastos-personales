@@ -73,7 +73,7 @@ export default function PasscodePrompt({
   });
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen">
+    <div className="flex flex-col justify-center items-center min-h-svh">
       <HoverEffect
         bgColor="#292929"
         className="flex flex-col items-center justify-between p-10 max-w-sm max-h-60 bg-secondary"

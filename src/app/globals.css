@@ -156,6 +156,22 @@
   h1, h2, h3 {
     letter-spacing: -0.02em;
   }
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  /* En modo app (iPhone) el contenido no debe quedar bajo la barra de estado. */
+  body {
+    padding-top: env(safe-area-inset-top);
+  }
+  @media (max-width: 640px) {
+    html {
+      font-size: 15px;
+    }
+    /* Safari hace zoom si un campo tiene menos de 16px. */
+    input, select, textarea {
+      font-size: 16px;
+    }
+  }
 }
 
 .no-scrollbar::-webkit-scrollbar {

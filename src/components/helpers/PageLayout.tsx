@@ -30,7 +30,7 @@ export default function PageLayout({
   return (
     <div
       className={cn(
-        "relative flex flex-col justify-center items-center gap-4 bg-secondary p-6 min-w-svw md:min-w-3xl md:rounded-md md:border md:border-border md:shadow-[0_0_0_1px_rgba(0,136,247,0.08),0_24px_60px_-30px_rgba(0,0,0,0.6)] transition-all duration-500",
+        "relative flex flex-col justify-center items-center gap-4 bg-secondary w-full p-3 md:p-6 md:min-w-3xl md:rounded-md md:border md:border-border md:shadow-[0_0_0_1px_rgba(0,136,247,0.08),0_24px_60px_-30px_rgba(0,0,0,0.6)] transition-all duration-500",
         appWidth === "Compact"
           ? "max-w-[600px] md:min-w-[600px]"
           : "max-w-3xl md:min-w-3xl"

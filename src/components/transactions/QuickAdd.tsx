@@ -158,14 +158,14 @@ export default function QuickAdd() {
       </div>
 
       <label className="flex items-end justify-center gap-2 py-2">
-        <span className="pb-2 text-2xl font-semibold text-muted-foreground">S/</span>
+        <span className="pb-1.5 sm:pb-2 text-xl sm:text-2xl font-semibold text-muted-foreground">S/</span>
         <input
           inputMode="decimal"
           autoComplete="off"
           placeholder="0.00"
           value={monto}
           onChange={(e) => setMonto(e.target.value.replace(/[^0-9.,]/g, ""))}
-          className="w-44 bg-transparent text-center text-5xl font-bold tabular-nums outline-none placeholder:text-muted-foreground/40"
+          className="w-40 sm:w-44 bg-transparent text-center text-4xl sm:text-5xl font-bold tabular-nums outline-none placeholder:text-muted-foreground/40"
           aria-label="Monto"
         />
       </label>
@@ -179,7 +179,7 @@ export default function QuickAdd() {
               type="button"
               onClick={() => setCategoria(activa ? "None" : c)}
               className={cn(
-                "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm transition",
+                "flex items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-xs sm:text-sm transition",
                 activa
                   ? esGasto
                     ? "border-red-500 bg-red-500/15 text-red-500"
