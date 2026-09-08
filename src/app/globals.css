@@ -162,6 +162,7 @@
   /* En modo app (iPhone) el contenido no debe quedar bajo la barra de estado. */
   body {
     padding-top: env(safe-area-inset-top);
+    overflow-x: hidden;
   }
   @media (max-width: 640px) {
     html {

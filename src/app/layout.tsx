@@ -76,7 +76,7 @@ export default function RootLayout({
           <PasscodeWrapper>
             <AppProvider>
               <BudgetProvider>
-                <main className="p-0 pb-20 md:p-6 md:pb-24">
+                <main className="w-full max-w-3xl p-0 pb-20 md:p-6 md:pb-24">
                   <PageLayout>
                     <Logo />
                     <Settings />
